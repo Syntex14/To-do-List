@@ -64,10 +64,54 @@
                 // Will remove text box and all elements of text box
                     // will default to what was on original page
 
-import { uiModule } from "./components/UI";
+import { uiModule, createToDo } from "./components/UI";
 
 function loadModules() {
     uiModule();
 }
 
 loadModules();
+
+const getAddTask = document.getElementById('addTask-p');
+getAddTask.addEventListener('click', createToDo);
+// App logic
+    // Default Mode - No to-do on list
+        // Create link/button that will allow user to add a to-do list to the list
+        // When user clicks, it opens a text box that allows user to input:
+            // title
+            // description
+            // due date
+            // project name
+            // submit or cancel button
+        // if sumbit
+            // adds to-do to current list
+            // updates projects if project name supplied
+        // if cancel
+            // deletes textbox, 
+            // goes back to default mode
+    // index.js will handle internal logic of application
+    // UI.js will create the components to display to the user
+
+    // 12-3
+        // 1. Create link/button
+            // use index.js
+                // created the default link for "add task"
+                    // still needs css styling and animation
+        // 2. Create text box that will allow user to input info
+            // Title
+            // Description
+            // Due Date
+            // Project Name
+        // 3. If submit
+            // Once user clicks, get values of
+                // title
+                // description
+                // due date
+                // project name
+                // event clicker cannot reference createToDo
+                        // will need to build logic for this part
+                
+            // Remove DOM element (text boxes)
+            // updates appriotate side bar
+
+            

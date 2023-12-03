@@ -38,7 +38,38 @@ barName.innerText = 'To-Do';
 const barDueDate = document.createElement('p');
 barDueDate.innerText = 'Due Date';
 
-toDoBar.append(barName, barDueDate);
+const addTaskWrapper = document.createElement('div');
+
+const addTask = document.createElement('p');
+addTask.setAttribute('class', 'addTask-p');
+addTask.innerText = 'Add Task';
+
+addTaskWrapper.append(addTask)
+toDoBar.append(barName, barDueDate, addTaskWrapper);
+
+export function createToDo(title) {
+
+    function createToDoListBox() {
+
+    const createTextBoxWrapper = document.createElement('div');
+
+    const createTitle = document.createElement('input');
+    createTitle.setAttribute('type', 'text');
+    createTitle.innerText = this.title;
+
+    const createSubmitButton = document.createElement('button');
+    createSubmitButton.setAttribute('id', 'createSubmitButton-button');
+    createSubmitButton.innerText = 'Submit';
+
+    const createCancelButton = document.createElement('button');
+    createCancelButton.setAttribute('id', 'createCancelButtton-button');
+    createCancelButton.innerText = 'Cancel';
+
+    createTextBoxWrapper.append(createTitle, createSubmitButton, createCancelButton);
+
+    }
+    return { createToDoListBox }
+}
 
 export function uiModule() {
     getRoot.append(header, sideBarWrapper, toDoBar);    
