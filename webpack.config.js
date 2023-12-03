@@ -18,7 +18,7 @@ module.exports = {
         <html>
           <head>
             <meta charset="utf-8">
-            <title>Weather-App</title>
+            <title>To-Do List</title>
           </head>
           <body>
             <div id="content"></div>
