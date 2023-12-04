@@ -31,6 +31,7 @@ sideBarWrapper.append(sideBarContentWrapper);
 // Create To-do Bar
 
 const toDoBar = document.createElement('div');
+toDoBar.setAttribute('id', 'toDoBar-div');
 
 const barName = document.createElement('p');
 barName.innerText = 'To-Do';
@@ -39,23 +40,20 @@ const barDueDate = document.createElement('p');
 barDueDate.innerText = 'Due Date';
 
 const addTaskWrapper = document.createElement('div');
+addTaskWrapper.setAttribute('id', 'addTaskWrapper-div');
 
 const addTask = document.createElement('p');
-addTask.setAttribute('class', 'addTask-p');
+addTask.setAttribute('id', 'addTask-p');
 addTask.innerText = 'Add Task';
 
 addTaskWrapper.append(addTask)
 toDoBar.append(barName, barDueDate, addTaskWrapper);
 
 export function createToDo(title) {
-
-    function createToDoListBox() {
-
     const createTextBoxWrapper = document.createElement('div');
 
     const createTitle = document.createElement('input');
     createTitle.setAttribute('type', 'text');
-    createTitle.innerText = this.title;
 
     const createSubmitButton = document.createElement('button');
     createSubmitButton.setAttribute('id', 'createSubmitButton-button');
@@ -67,10 +65,20 @@ export function createToDo(title) {
 
     createTextBoxWrapper.append(createTitle, createSubmitButton, createCancelButton);
 
-    }
-    return { createToDoListBox }
+    return createTextBoxWrapper;
 }
+
+// Click on 'Add Task'
+    // 1. User clicks on 'Add Task'
+        // Open UI that is created
+    // 2. User types in information in text boxes. 
+    // 3. Users submits information
+        // Collect data from user submission
+            // Show data in to-do
+    // 3b. User cancels request
+        // Delete text box
+    
 
 export function uiModule() {
     getRoot.append(header, sideBarWrapper, toDoBar);    
-}
+};

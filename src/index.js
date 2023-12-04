@@ -66,6 +66,8 @@
 
 import { uiModule, createToDo } from "./components/UI";
 
+
+
 function loadModules() {
     uiModule();
 }
@@ -73,7 +75,22 @@ function loadModules() {
 loadModules();
 
 const getAddTask = document.getElementById('addTask-p');
-getAddTask.addEventListener('click', createToDo);
+
+function addTaskListener() {
+    getAddTask.addEventListener('click', appendTextBox);
+
+}
+
+addTaskListener();
+
+function appendTextBox() {
+    let textBox = createToDo();
+        getAddTask.append(textBox);
+
+        if(textBox) {
+            getAddTask.removeEventListener('click', appendTextBox);
+        }
+}
 // App logic
     // Default Mode - No to-do on list
         // Create link/button that will allow user to add a to-do list to the list
