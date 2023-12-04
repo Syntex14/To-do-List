@@ -65,7 +65,11 @@ export function createToDo(title) {
 
     createTextBoxWrapper.append(createTitle, createSubmitButton, createCancelButton);
 
-    return createTextBoxWrapper;
+    const updateTitle = () => {
+        createTitle.innerText = this.input.value;
+    }
+
+    return { createTextBoxWrapper, updateTitle };
 }
 
 // Click on 'Add Task'

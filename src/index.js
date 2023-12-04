@@ -75,6 +75,7 @@ function loadModules() {
 loadModules();
 
 const getAddTask = document.getElementById('addTask-p');
+const getSubmitButton = document.getElementById('createSubmitButton-button');
 
 function addTaskListener() {
     getAddTask.addEventListener('click', appendTextBox);
@@ -84,12 +85,25 @@ function addTaskListener() {
 addTaskListener();
 
 function appendTextBox() {
-    let textBox = createToDo();
-        getAddTask.append(textBox);
 
-        if(textBox) {
-            getAddTask.removeEventListener('click', appendTextBox);
-        }
+    let textBox = createToDo();
+    getAddTask.append(textBox);
+
+    if(textBox) {
+        getAddTask.removeEventListener('click', appendTextBox);
+    }
+
+    function submitTaskListener() {
+        getSubmitButton.addEventListener('click', () => {
+            // User will click submit and submit values of textbox
+                // Listen for the click
+                // Get the values
+                    // We need a place to store values
+        textBox.updateTitle();
+    });
+}
+    submitTaskListener();
+    // when user submits or cancels request, we must add event listener back
 }
 // App logic
     // Default Mode - No to-do on list
