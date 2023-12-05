@@ -64,7 +64,7 @@
                 // Will remove text box and all elements of text box
                     // will default to what was on original page
 
-import { uiModule, createToDo } from "./components/UI";
+import { uiModule, createInputBox } from "./components/UI";
 
 
 
@@ -84,7 +84,7 @@ function addTaskListener() {
 addTaskListener();
 
 function appendTextBox() {
-    const textBox = createToDo();
+    const textBox = createInputBox();
     textBox.createTextBox();
 
     if(textBox) {
@@ -101,14 +101,13 @@ function appendTextBox() {
     function submitTask() {
         console.log('success!');
         removeTask();
-        const addTaskListenerReference = addTaskListener;
-        getAddTask.addEventListener('click', addTaskListenerReference);
-        // going to have update addTaskListener
+        getAddTask.addEventListener('click', addTaskListener);
     }
 
     function removeTask() {
         const getTextBox = document.getElementById('createTextBoxWrapper-div');
         getTextBox.remove();
+        getAddTask.addEventListener('click', addTaskListener);
     }
 
 

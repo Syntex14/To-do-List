@@ -49,7 +49,7 @@ addTask.innerText = 'Add Task';
 addTaskWrapper.append(addTask)
 toDoBar.append(barName, barDueDate, addTaskWrapper);
 
-export function createToDo(title) {
+export function createInputBox() {
 
     const createTextBoxWrapper = document.createElement('div');
     createTextBoxWrapper.setAttribute('id', 'createTextBoxWrapper-div');
@@ -67,34 +67,23 @@ export function createToDo(title) {
 
     createTextBoxWrapper.append(createTitle, createSubmitButton, createCancelButton);
 
-    const updateTitle = () => {
-        createTitle.innerText = this.input.value;
-    }
-
     const createTextBox = () => {
         let textBox = createTextBoxWrapper;
         const getAddTask = document.getElementById('addTask-p');
         getAddTask.append(textBox);
-        
     }
-
-    return { createTextBox, updateTitle };
-
-    // return this while doing submit listener does not return the value createTextBoxWRapper, but two objects,
-        // will need to get object and return as a function
-            // maybe use a function to get the wrapper and append?
-
+    return { createTextBox };
 }
 
-// Click on 'Add Task'
-    // 1. User clicks on 'Add Task'
-        // Open UI that is created
-    // 2. User types in information in text boxes. 
-    // 3. Users submits information
-        // Collect data from user submission
-            // Show data in to-do
-    // 3b. User cancels request
-        // Delete text box
+// To add the to-do when user clicks submit
+    // 1. create a function that will create the to-do
+        // take createToDo as inspiration
+    // 2. get values of input fields when submit is clicked by user
+        // clear iput fields after submit is clicked
+
+function createToDo() {
+
+}
     
 
 export function uiModule() {
