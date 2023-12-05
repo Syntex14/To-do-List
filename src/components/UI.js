@@ -50,7 +50,9 @@ addTaskWrapper.append(addTask)
 toDoBar.append(barName, barDueDate, addTaskWrapper);
 
 export function createToDo(title) {
+
     const createTextBoxWrapper = document.createElement('div');
+    createTextBoxWrapper.setAttribute('id', 'createTextBoxWrapper-div');
 
     const createTitle = document.createElement('input');
     createTitle.setAttribute('type', 'text');
@@ -60,7 +62,7 @@ export function createToDo(title) {
     createSubmitButton.innerText = 'Submit';
 
     const createCancelButton = document.createElement('button');
-    createCancelButton.setAttribute('id', 'createCancelButtton-button');
+    createCancelButton.setAttribute('id', 'createCancelButton-button');
     createCancelButton.innerText = 'Cancel';
 
     createTextBoxWrapper.append(createTitle, createSubmitButton, createCancelButton);
@@ -69,7 +71,19 @@ export function createToDo(title) {
         createTitle.innerText = this.input.value;
     }
 
-    return { createTextBoxWrapper, updateTitle };
+    const createTextBox = () => {
+        let textBox = createTextBoxWrapper;
+        const getAddTask = document.getElementById('addTask-p');
+        getAddTask.append(textBox);
+        
+    }
+
+    return { createTextBox, updateTitle };
+
+    // return this while doing submit listener does not return the value createTextBoxWRapper, but two objects,
+        // will need to get object and return as a function
+            // maybe use a function to get the wrapper and append?
+
 }
 
 // Click on 'Add Task'

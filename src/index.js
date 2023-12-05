@@ -74,35 +74,44 @@ function loadModules() {
 
 loadModules();
 
+
 const getAddTask = document.getElementById('addTask-p');
-const getSubmitButton = document.getElementById('createSubmitButton-button');
 
 function addTaskListener() {
     getAddTask.addEventListener('click', appendTextBox);
-
 }
 
 addTaskListener();
 
 function appendTextBox() {
-
-    let textBox = createToDo();
-    getAddTask.append(textBox);
+    const textBox = createToDo();
+    textBox.createTextBox();
 
     if(textBox) {
         getAddTask.removeEventListener('click', appendTextBox);
     }
 
-    function submitTaskListener() {
-        getSubmitButton.addEventListener('click', () => {
-            // User will click submit and submit values of textbox
-                // Listen for the click
-                // Get the values
-                    // We need a place to store values
-        textBox.updateTitle();
-    });
-}
-    submitTaskListener();
+    const getSubmitButton = document.getElementById('createSubmitButton-button');
+    getSubmitButton.addEventListener('click', submitTask);
+
+    const getCancelButton = document.getElementById('createCancelButton-button');
+    getCancelButton.addEventListener('click', removeTask);
+    
+
+    function submitTask() {
+        console.log('success!');
+        removeTask();
+        const addTaskListenerReference = addTaskListener;
+        getAddTask.addEventListener('click', addTaskListenerReference);
+        // going to have update addTaskListener
+    }
+
+    function removeTask() {
+        const getTextBox = document.getElementById('createTextBoxWrapper-div');
+        getTextBox.remove();
+    }
+
+
     // when user submits or cancels request, we must add event listener back
 }
 // App logic
