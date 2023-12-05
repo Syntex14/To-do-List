@@ -64,7 +64,7 @@
                 // Will remove text box and all elements of text box
                     // will default to what was on original page
 
-import { uiModule, createInputBox } from "./components/UI";
+import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
 
 
 
@@ -92,7 +92,13 @@ function appendTextBox() {
     }
 
     const getSubmitButton = document.getElementById('createSubmitButton-button');
-    getSubmitButton.addEventListener('click', submitTask);
+    getSubmitButton.addEventListener('click', e => {
+        let toDo = createToDoLogic(e);
+        toDo.createToDo();
+        const getTitle = document.getElementById('createTitle-input');
+        console.log(getTitle.value);
+        removeTask();
+    });
 
     const getCancelButton = document.getElementById('createCancelButton-button');
     getCancelButton.addEventListener('click', removeTask);

@@ -1,3 +1,5 @@
+import { setMultipleAttributes } from "../utils";
+
 const getRoot = document.getElementById('content');
 
 // Create header section
@@ -55,7 +57,7 @@ export function createInputBox() {
     createTextBoxWrapper.setAttribute('id', 'createTextBoxWrapper-div');
 
     const createTitle = document.createElement('input');
-    createTitle.setAttribute('type', 'text');
+    setMultipleAttributes(createTitle, {'type':'text', 'id':'createTitle-input'});
 
     const createSubmitButton = document.createElement('button');
     createSubmitButton.setAttribute('id', 'createSubmitButton-button');
@@ -81,8 +83,48 @@ export function createInputBox() {
     // 2. get values of input fields when submit is clicked by user
         // clear iput fields after submit is clicked
 
-function createToDo() {
+export function createToDoLogic() {
 
+    const toDoWrapper = document.createElement('div');
+    toDoWrapper.setAttribute('id', 'toDoWrapper-div');
+
+    const checkBox = document.createElement('input');
+    setMultipleAttributes(checkBox, {
+        'input':'checkbox',
+        'id':'toDoWrapper-div'
+    });
+
+    const toDoName = document.createElement('p');
+    toDoName.setAttribute('id', 'toDoName-p');
+
+    const dueDate = document.createElement('p');
+    dueDate.setAttribute('id', 'dueDate-p');
+
+    const deleteButton = document.createElement('button');
+    deleteButton.setAttribute('id', 'deleteButton-button');
+    deleteButton.innerText = 'Delete';
+
+    toDoWrapper.append(checkBox, toDoName, dueDate, deleteButton);
+
+    const createToDo = () => {
+        const getToDoBar = document.getElementById('toDoBar-div');
+        getToDoBar.appendChild(toDoWrapper);
+    }
+
+    const updateName = (name) => {
+        toDoName.innerText = `${name}`;
+    }
+
+    const updateDueDate = (dueDate) => {
+        dueDate.innerText = `${dueDate}`;
+    }
+
+    const deleteToDo = () => {
+        const getDeleteButton = document.getElementById('deleteButton-button');
+        getDeleteButton.remove();
+    }
+
+    return { createToDo, updateName, updateDueDate, deleteToDo };
 }
     
 
