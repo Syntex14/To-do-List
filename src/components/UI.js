@@ -57,7 +57,22 @@ export function createInputBox() {
     createTextBoxWrapper.setAttribute('id', 'createTextBoxWrapper-div');
 
     const createTitle = document.createElement('input');
-    setMultipleAttributes(createTitle, {'type':'text', 'id':'createTitle-input'});
+    setMultipleAttributes(createTitle, {
+        'type':'text',
+        'id':'createTitle-input'
+    });
+
+    const createDescription = document.createElement('input');
+    setMultipleAttributes(createDescription, {
+        'type':'text',
+         'id':'createDescription-input'
+    });
+
+    const createDueDate = document.createElement('input');
+    setMultipleAttributes(createDueDate, {
+        'type':'input',
+        'id':'createDueDate.input'
+    });
 
     const createSubmitButton = document.createElement('button');
     createSubmitButton.setAttribute('id', 'createSubmitButton-button');
@@ -67,7 +82,7 @@ export function createInputBox() {
     createCancelButton.setAttribute('id', 'createCancelButton-button');
     createCancelButton.innerText = 'Cancel';
 
-    createTextBoxWrapper.append(createTitle, createSubmitButton, createCancelButton);
+    createTextBoxWrapper.append(createTitle, createDescription, createSubmitButton, createCancelButton);
 
     const createTextBox = () => {
         let textBox = createTextBoxWrapper;
@@ -83,22 +98,24 @@ export function createInputBox() {
     // 2. get values of input fields when submit is clicked by user
         // clear iput fields after submit is clicked
 
-export function createToDoLogic() {
+export function createToDoLogic(name, date) {
 
     const toDoWrapper = document.createElement('div');
     toDoWrapper.setAttribute('id', 'toDoWrapper-div');
 
     const checkBox = document.createElement('input');
     setMultipleAttributes(checkBox, {
-        'input':'checkbox',
+        'type':'checkbox',
         'id':'toDoWrapper-div'
     });
 
     const toDoName = document.createElement('p');
     toDoName.setAttribute('id', 'toDoName-p');
+    toDoName.innerText = `${name}`;
 
     const dueDate = document.createElement('p');
     dueDate.setAttribute('id', 'dueDate-p');
+    dueDate.innerText = `${date}`;
 
     const deleteButton = document.createElement('button');
     deleteButton.setAttribute('id', 'deleteButton-button');

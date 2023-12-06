@@ -78,47 +78,71 @@ loadModules();
 const getAddTask = document.getElementById('addTask-p');
 
 function addTaskListener() {
-    getAddTask.addEventListener('click', appendTextBox);
+    getAddTask.addEventListener('click', textBoxLogic);
 }
 
 addTaskListener();
 
-function appendTextBox() {
+function textBoxLogic() {
     const textBox = createInputBox();
     textBox.createTextBox();
 
     if(textBox) {
-        getAddTask.removeEventListener('click', appendTextBox);
+        getAddTask.removeEventListener('click', textBoxLogic);
     }
 
     const getSubmitButton = document.getElementById('createSubmitButton-button');
-    getSubmitButton.addEventListener('click', e => {
-        let toDo = createToDoLogic(e);
-        toDo.createToDo();
-        const getTitle = document.getElementById('createTitle-input');
-        console.log(getTitle.value);
-        removeTask();
+    getSubmitButton.addEventListener('click', () => {
+        getToDoValues();
+        submitTask();
     });
 
     const getCancelButton = document.getElementById('createCancelButton-button');
-    getCancelButton.addEventListener('click', removeTask);
+    getCancelButton.addEventListener('click', cancelTask);
     
-
     function submitTask() {
-        console.log('success!');
-        removeTask();
+        cancelTask();
         getAddTask.addEventListener('click', addTaskListener);
     }
 
-    function removeTask() {
+    function cancelTask() {
         const getTextBox = document.getElementById('createTextBoxWrapper-div');
         getTextBox.remove();
         getAddTask.addEventListener('click', addTaskListener);
     }
 
+    function getToDoValues() {
+        const toDoValues = [];
+        const getTitleValue = document.getElementById('createTitle-input');
+        const getDescriptionValue = document.getElementById('createDescription-input');
 
-    // when user submits or cancels request, we must add event listener back
+        toDoValues[0] = getTitleValue.value;
+        toDoValues[1] = getDescriptionValue.value;
+
+        toDoLogic(toDoValues);
+    }
+
 }
+
+// only interaction that will occur between textBoxLogic asnd toDoLogic is
+    // when user submits task, we need to get information
+    // to use when creating toDo.
+    // return information and use it in toDo logic?
+    // create a function in textBoxLogic that gathers the information
+    // 
+
+
+function toDoLogic(vals) {
+    let toDo = createToDoLogic(...vals);
+    toDo.createToDo();
+
+    function updateToDoName() {
+        const getTitle = document.getElementById('createTitle-input');
+        const getInputName = getTitle.value;
+        toDo.updateName(getInputName);
+    }
+}
+
 // App logic
     // Default Mode - No to-do on list
         // Create link/button that will allow user to add a to-do list to the list
