@@ -71,7 +71,6 @@ import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
 function loadModules() {
     uiModule();
 }
-
 loadModules();
 
 
@@ -83,6 +82,8 @@ function addTaskListener() {
 
 addTaskListener();
 
+const dataObject = storeToDoData();
+
 function textBoxLogic() {
     const textBox = createInputBox();
     textBox.createTextBox();
@@ -93,7 +94,10 @@ function textBoxLogic() {
 
     const getSubmitButton = document.getElementById('createSubmitButton-button');
     getSubmitButton.addEventListener('click', () => {
-        getToDoValues();
+        let values = getToDoValues();
+        dataObject.createDataObject(...values);
+        dataObject.trackToDoList();
+        toDoLogic(values);
         submitTask();
     });
 
@@ -114,12 +118,13 @@ function textBoxLogic() {
     function getToDoValues() {
         const toDoValues = [];
         const getTitleValue = document.getElementById('createTitle-input');
-        const getDescriptionValue = document.getElementById('createDescription-input');
+        // const getDescriptionValue = document.getElementById('createDescription-input');
+        const getDueDateValue = document.getElementById('createDueDate-input');
 
         toDoValues[0] = getTitleValue.value;
-        toDoValues[1] = getDescriptionValue.value;
+        toDoValues[1] = getDueDateValue.value;
 
-        toDoLogic(toDoValues);
+        return toDoValues;
     }
 
 }
@@ -134,14 +139,157 @@ function textBoxLogic() {
 
 function toDoLogic(vals) {
     let toDo = createToDoLogic(...vals);
-    toDo.createToDo();
+    toDo.appendToDo();
 
-    function updateToDoName() {
-        const getTitle = document.getElementById('createTitle-input');
-        const getInputName = getTitle.value;
-        toDo.updateName(getInputName);
+    // function updateToDoName() {
+    //     const getTitle = document.getElementById('createTitle-input');
+    //     const getInputName = getTitle.value;
+    //     toDo.updateName(getInputName);
+    // }
+
+    // this part need to be updated completely to work with
+    // an edit mode, currently I have it where the only time
+    // a to-do name is made is during setup
+
+    // edit mode
+        // 1. Update name
+        // 2. Update Due Date
+        // 3. Update Description
+        // 4. Update Project Name
+        // 5. Delete To-Do
+    
+}
+
+function sideBarLogic() {
+    const getSideBar = document.getElementById('sideBarContentWrapper-div');
+    
+    function getAllToDos () {
+        const toDos = document.querySelectorAll('.toDoWrapper-div');   
+        return toDos; 
+    }
+
+    getSideBar.addEventListener('click', e => {
+        switch(e.target.innerText) {
+            case 'Home': 
+            getAllToDos.remove;
+
+
+                // remove all to-dos from screen
+                // get all tasks from data
+                // createToDo using append function and values
+                // from data
+
+        }
+    });
+}
+
+sideBarLogic();
+
+// I'm going to need a way to store data from the textboxes the user supplies
+// Currently, I am reliant on the DOM to keep user data
+// But if I am going to update pages and DOM, I'll lose access
+// to that data. 
+
+// The data that would need to be stored is 
+// 1. Completion (checkBox)
+// 2. Name
+// 3. Description
+// 4. Due Date
+
+// Additionally, I'd need to be able to update or
+// delete the data
+
+// The entry point for the data would be when the user submits
+// their to-do
+
+// An additional entry point would be when the user decides to
+// update a to-do
+
+// Lets start on the first entry point: submission of data by
+// user
+
+// When user clicks submit, create an object that stores
+    // Completion
+    // Name
+    // Description
+    // Due Date
+
+// Using getToDoValues in textBoxLogic to pass the necessary
+// values
+
+// We know how to get the data and how to store the data itself
+// but how do we store the objects?
+
+// We can 
+    // store them in one array, using querySelectors and all 
+    // to get the info we need
+    // OR
+    // we can store in separate arrays, separating them based
+    // on some type of property
+    // e.g. project name
+    // no project name = general array
+    // project name = project array
+
+function storeToDoData() {
+    const toDoDataArray = [];
+
+    function createDataObject(toDoName, toDoDescription, toDoDueDate)
+    {
+        return toDoDataArray.push({
+            completion: false,
+            name: `${toDoName}`,
+            description: `${toDoDescription}`,
+            dueDate: `${toDoDueDate}`
+        });
+    }
+
+    function appendDataObject() {
+      toDoDataArray.push(createDataObject());
+    }
+
+    function deleteDataObject() {
+        // splice(i, 1);
+            // How can we get i is the question
+
+    }
+
+    function updateDataObject() {
+        // have to grab the specific to-do in question when
+        // using edit mode
+
+    }
+    
+    function trackToDoList() {
+        console.log(toDoDataArray);
+    }
+
+    return { 
+        createDataObject,
+        appendDataObject,
+        trackToDoList 
     }
 }
+
+// SideBar Logic
+
+// Get all the elements 
+    // Home
+    // Today
+    // Week
+    // Projects
+// Set up a default page
+    // Home
+        // Shows all to-dos
+    // Today
+        // Shows all to-dos with today's date
+    // Week
+        // Shows all to-dos due within a week of today
+    // Projects
+        // Shows to-dos based on project name
+            // e.g. Project Name: Coding
+                // to-do: Reformat code
+                // to-do: Push to production 
+    
 
 // App logic
     // Default Mode - No to-do on list
@@ -183,4 +331,4 @@ function toDoLogic(vals) {
             // Remove DOM element (text boxes)
             // updates appriotate side bar
 
-            
+

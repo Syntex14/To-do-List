@@ -16,13 +16,22 @@ header.append(title);
 const sideBarWrapper = document.createElement('div');
 
 const sideBarContentWrapper = document.createElement('div');
+sideBarContentWrapper.setAttribute('id', 'sideBarContentWrapper-div');
+
 const homeTab = document.createElement('p');
+homeTab.setAttribute('id', 'homeTab-p');
 homeTab.innerText = 'Home';
+
 const todayTab = document.createElement('p');
+todayTab.setAttribute('id', 'todayTab-p');
 todayTab.innerText = 'Today';
+
 const weekTab = document.createElement('p');
+weekTab.setAttribute('id', 'weekTab-p');
 weekTab.innerText = 'Week';
+
 const projectDiv = document.createElement('div');
+projectDiv.setAttribute('id', 'projectDiv-div');
 const projectDivText = document.createElement('p');
 projectDivText.innerText = 'Projects';
 
@@ -59,19 +68,29 @@ export function createInputBox() {
     const createTitle = document.createElement('input');
     setMultipleAttributes(createTitle, {
         'type':'text',
-        'id':'createTitle-input'
+        'id':'createTitle-input',
+        'placeholder':'Title: Code!'
     });
 
     const createDescription = document.createElement('input');
     setMultipleAttributes(createDescription, {
         'type':'text',
-         'id':'createDescription-input'
+         'id':'createDescription-input',
+         'placeholder':'Details: e.g code starting at 2 P.M.'
     });
 
     const createDueDate = document.createElement('input');
     setMultipleAttributes(createDueDate, {
-        'type':'input',
-        'id':'createDueDate.input'
+        'type':'text',
+        'id':'createDueDate-input',
+        'placeholder':'Due Date: 12/10/23'
+    });
+
+    const createProjectName = document.createElement('input');
+    setMultipleAttributes(createProjectName, {
+        'type':'text',
+        'id':'createProjectName-input',
+        'placeholder':'Project Name'
     });
 
     const createSubmitButton = document.createElement('button');
@@ -82,7 +101,7 @@ export function createInputBox() {
     createCancelButton.setAttribute('id', 'createCancelButton-button');
     createCancelButton.innerText = 'Cancel';
 
-    createTextBoxWrapper.append(createTitle, createDescription, createSubmitButton, createCancelButton);
+    createTextBoxWrapper.append(createTitle, createDueDate, createDescription, createProjectName, createSubmitButton, createCancelButton);
 
     const createTextBox = () => {
         let textBox = createTextBoxWrapper;
@@ -101,29 +120,29 @@ export function createInputBox() {
 export function createToDoLogic(name, date) {
 
     const toDoWrapper = document.createElement('div');
-    toDoWrapper.setAttribute('id', 'toDoWrapper-div');
+    toDoWrapper.setAttribute('class', 'toDoWrapper-div');
 
     const checkBox = document.createElement('input');
     setMultipleAttributes(checkBox, {
         'type':'checkbox',
-        'id':'toDoWrapper-div'
+        'class':'checkBox-input'
     });
 
     const toDoName = document.createElement('p');
-    toDoName.setAttribute('id', 'toDoName-p');
+    toDoName.setAttribute('class', 'toDoName-p');
     toDoName.innerText = `${name}`;
 
     const dueDate = document.createElement('p');
-    dueDate.setAttribute('id', 'dueDate-p');
+    dueDate.setAttribute('class', 'dueDate-p');
     dueDate.innerText = `${date}`;
 
     const deleteButton = document.createElement('button');
-    deleteButton.setAttribute('id', 'deleteButton-button');
+    deleteButton.setAttribute('class', 'deleteButton-button');
     deleteButton.innerText = 'Delete';
 
     toDoWrapper.append(checkBox, toDoName, dueDate, deleteButton);
 
-    const createToDo = () => {
+    const appendToDo = () => {
         const getToDoBar = document.getElementById('toDoBar-div');
         getToDoBar.appendChild(toDoWrapper);
     }
@@ -139,9 +158,12 @@ export function createToDoLogic(name, date) {
     const deleteToDo = () => {
         const getDeleteButton = document.getElementById('deleteButton-button');
         getDeleteButton.remove();
+        // will have to update this to work with classes
+        // will need a more specific selector
+        // think of selecting class then the specific target
     }
 
-    return { createToDo, updateName, updateDueDate, deleteToDo };
+    return { appendToDo, updateName, updateDueDate, deleteToDo };
 }
     
 
