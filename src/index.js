@@ -68,30 +68,28 @@ import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
 
 
 
-function loadModules() {
+(function loadModules() {
     uiModule();
-}
-loadModules();
-
-
-const getAddTask = document.getElementById('addTask-p');
+})(); // made an edit here
 
 function addTaskListener() {
-    getAddTask.addEventListener('click', textBoxLogic);
-}
-
+    const getAddTask = document.getElementById('addTask-p');
+    getAddTask.addEventListener('click', textBoxLogic, { once: true });
+} // made an edit here
 addTaskListener();
 
 const dataObject = storeToDoData();
 
 function textBoxLogic() {
-    const textBox = createInputBox();
-    textBox.createTextBox();
 
-    if(textBox) {
-        getAddTask.removeEventListener('click', textBoxLogic);
-    }
+    const getAddTask = document.getElementById('addTask-p');
 
+    (function () {
+        const textBox = createInputBox();
+        textBox.createTextBox();
+        removeTextBoxListener(true);
+    })(); // made an edit here
+    
     const getSubmitButton = document.getElementById('createSubmitButton-button');
     getSubmitButton.addEventListener('click', () => {
         let values = getToDoValues();
@@ -103,16 +101,31 @@ function textBoxLogic() {
 
     const getCancelButton = document.getElementById('createCancelButton-button');
     getCancelButton.addEventListener('click', cancelTask);
-    
+
+    function addTextBoxListener() {
+        getAddTask.addEventListener('click', addTaskListener);
+    }
+
+    function removeTextBoxListener(textBoxFlag) {
+        if(textBoxFlag) {
+            getAddTask.removeEventListener('click', addTaskListener);
+        }
+    }
+
     function submitTask() {
         cancelTask();
-        getAddTask.addEventListener('click', addTaskListener);
     }
 
     function cancelTask() {
         const getTextBox = document.getElementById('createTextBoxWrapper-div');
         getTextBox.remove();
         getAddTask.addEventListener('click', addTaskListener);
+        // glitch appears to be here and in submit task where addTaskListener stays
+        // will have to edit this portion of the program
+
+        // Need to run an event listener only once in the beginning of the dom loading
+        // Create a function inside that will then re-add the event listener
+
     }
 
     function getToDoValues() {
@@ -163,17 +176,19 @@ function toDoLogic(vals) {
 function sideBarLogic() {
     const getSideBar = document.getElementById('sideBarContentWrapper-div');
     
-    function getAllToDos () {
-        const toDos = document.querySelectorAll('.toDoWrapper-div');   
-        return toDos; 
+    function removeAllToDos () {
+        const toDos = document.getElementsByClassName('toDoWrapper-div');   
+        
+      for ( let i = 0; i < toDos.length; i++) {
+        toDos[i].remove();
+      }
     }
 
     getSideBar.addEventListener('click', e => {
         switch(e.target.innerText) {
             case 'Home': 
-            getAllToDos.remove;
-
-
+                removeAllToDos();
+                
                 // remove all to-dos from screen
                 // get all tasks from data
                 // createToDo using append function and values
