@@ -72,60 +72,70 @@ import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
     uiModule();
 })(); // made an edit here
 
-function addTaskListener() {
-    const getAddTask = document.getElementById('addTask-p');
-    getAddTask.addEventListener('click', textBoxLogic, { once: true });
-} // made an edit here
-addTaskListener();
-
 const dataObject = storeToDoData();
+let textBox = textBoxLogic();
+let addTask = addTaskLogic();
+addTask.addTaskListener();
 
-function textBoxLogic() {
+function addTaskLogic() {
 
-    const getAddTask = document.getElementById('addTask-p');
+const getAddTask = document.getElementById('addTask-p');
 
-    (function () {
-        const textBox = createInputBox();
-        textBox.createTextBox();
-        removeTextBoxListener(true);
-    })(); // made an edit here
-    
-    const getSubmitButton = document.getElementById('createSubmitButton-button');
-    getSubmitButton.addEventListener('click', () => {
-        let values = getToDoValues();
-        dataObject.createDataObject(...values);
-        dataObject.trackToDoList();
-        toDoLogic(values);
-        submitTask();
-    });
-
-    const getCancelButton = document.getElementById('createCancelButton-button');
-    getCancelButton.addEventListener('click', cancelTask);
-
-    function addTextBoxListener() {
-        getAddTask.addEventListener('click', addTaskListener);
+    function addTaskListener() {
+          getAddTask.addEventListener(
+          'click',
+          textBox.createTextBoxLogic,
+          { once: true });
     }
 
-    function removeTextBoxListener(textBoxFlag) {
+    // return this maybe?
+    
+    function removeTaskListener(textBoxFlag) {
         if(textBoxFlag) {
-            getAddTask.removeEventListener('click', addTaskListener);
+            getAddTask.removeEventListener(
+              'click',
+              addTaskListener);
         }
     }
 
-    function submitTask() {
-        cancelTask();
-    }
+    return { addTaskListener, removeTaskListener };
+}
 
-    function cancelTask() {
+
+
+function textBoxLogic() {
+
+    function createTextBoxLogic() {
+        const textBox = createInputBox();
+        textBox.createTextBox();
+        addTask.removeTaskListener(true);
+        addButtonListeners();
+    }; // made an edit here
+
+    function addButtonListeners() {
+        const getSubmitButton = document.getElementById(
+            'createSubmitButton-button'
+        );
+            getSubmitButton.addEventListener('click', () => {
+                let values = getToDoValues();
+                dataObject.createDataObject(...values);
+                dataObject.trackToDoList();
+                toDoLogic(values);
+                removeTask();
+    });
+        const getCancelButton = document.getElementById(
+            'createCancelButton-button'
+        );
+        getCancelButton.addEventListener('click', removeTask);
+    }
+    
+    function removeTask() {
         const getTextBox = document.getElementById('createTextBoxWrapper-div');
         getTextBox.remove();
-        getAddTask.addEventListener('click', addTaskListener);
-        // glitch appears to be here and in submit task where addTaskListener stays
-        // will have to edit this portion of the program
-
-        // Need to run an event listener only once in the beginning of the dom loading
-        // Create a function inside that will then re-add the event listener
-
+        let reference = addTask.addTaskListener;
+        console.log(reference);
+        const getAddTask = document.getElementById('addTask-p');
+        getAddTask.addEventListener('click', addTask.addTaskListener);
     }
 
     function getToDoValues() {
@@ -140,6 +150,7 @@ function textBoxLogic() {
         return toDoValues;
     }
 
+    return { createTextBoxLogic };
 }
 
 // only interaction that will occur between textBoxLogic asnd toDoLogic is
@@ -177,7 +188,7 @@ function sideBarLogic() {
     const getSideBar = document.getElementById('sideBarContentWrapper-div');
     
     function removeAllToDos () {
-        const toDos = document.getElementsByClassName('toDoWrapper-div');   
+        const toDos = document.querySelectorAll('.toDoWrapper-div');   
         
       for ( let i = 0; i < toDos.length; i++) {
         toDos[i].remove();
@@ -188,6 +199,8 @@ function sideBarLogic() {
         switch(e.target.innerText) {
             case 'Home': 
                 removeAllToDos();
+                dataObject.getToDoData();
+
                 
                 // remove all to-dos from screen
                 // get all tasks from data
@@ -278,7 +291,12 @@ function storeToDoData() {
         console.log(toDoDataArray);
     }
 
+    function getToDoData() {
+        return toDoDataArray;
+    }
+
     return { 
+        getToDoData,
         createDataObject,
         appendDataObject,
         trackToDoList 
