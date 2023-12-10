@@ -65,7 +65,7 @@
                     // will default to what was on original page
 
 import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
-
+import { formatData } from './utils';
 
 
 (function loadModules() {
@@ -73,6 +73,7 @@ import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
 })(); // made an edit here
 
 const dataObject = storeToDoData();
+const dataFormate = formatData();
 let textBox = textBoxLogic();
 let addTask = addTaskLogic();
 addTask.addTaskListener();
@@ -132,8 +133,6 @@ function textBoxLogic() {
     function removeTask() {
         const getTextBox = document.getElementById('createTextBoxWrapper-div');
         getTextBox.remove();
-        let reference = addTask.addTaskListener;
-        console.log(reference);
         const getAddTask = document.getElementById('addTask-p');
         getAddTask.addEventListener('click', addTask.addTaskListener);
     }
@@ -145,9 +144,12 @@ function textBoxLogic() {
         const getDueDateValue = document.getElementById('createDueDate-input');
 
         toDoValues[0] = getTitleValue.value;
-        toDoValues[1] = getDueDateValue.value;
+        toDoValues[1] = dataFormate.formatDate(getDueDateValue.value);
 
         return toDoValues;
+
+        // Is this function still neccessary? 
+        // I can do the same in data storage function
     }
 
     return { createTextBoxLogic };
@@ -186,6 +188,7 @@ function toDoLogic(vals) {
 
 function sideBarLogic() {
     const getSideBar = document.getElementById('sideBarContentWrapper-div');
+    let dataArray = dataObject.getToDoData();
     
     function removeAllToDos () {
         const toDos = document.querySelectorAll('.toDoWrapper-div');   
@@ -199,8 +202,19 @@ function sideBarLogic() {
         switch(e.target.innerText) {
             case 'Home': 
                 removeAllToDos();
-                dataObject.getToDoData();
+                dataArray.forEach((toDo) => {
+                    let refreshToDo = createToDoLogic(...Object.values(toDo))
+                    refreshToDo.appendToDo();
+                });
+            case 'Today': 
+                removeAllToDos();
+                // will need a conditional
+                // compare today's date to dueDate from each toDo
+                    // how to get today's date?
 
+
+                    
+                
                 
                 // remove all to-dos from screen
                 // get all tasks from data
@@ -261,13 +275,14 @@ sideBarLogic();
 function storeToDoData() {
     const toDoDataArray = [];
 
-    function createDataObject(toDoName, toDoDescription, toDoDueDate)
+    function createDataObject(toDoName, toDoDueDate, toDoDescription )
     {
         return toDoDataArray.push({
-            completion: false,
             name: `${toDoName}`,
+            dueDate: `${toDoDueDate}`,
+            completion: false,
             description: `${toDoDescription}`,
-            dueDate: `${toDoDueDate}`
+            
         });
     }
 
