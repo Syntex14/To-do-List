@@ -110,6 +110,7 @@ function textBoxLogic() {
         const textBox = createInputBox();
         textBox.createTextBox();
         addTask.removeTaskListener(true);
+        dueDateLogic();
         addButtonListeners();
     }; // made an edit here
 
@@ -153,6 +154,26 @@ function textBoxLogic() {
     }
 
     return { createTextBoxLogic };
+}
+
+function dueDateLogic() {
+    const dateInput = document.getElementById('createDueDate-input');
+    let timeOutId;
+    dateInput.addEventListener('input', function() {
+        clearTimeout(timeOutId);
+        
+        timeOutId = setTimeout(() => {
+        const inputValue = this.value;
+        const formatPattern = /\d{2}\/\d{2}\/\d{4}/;
+
+            if(!formatPattern.test(inputValue)); {
+                alert('Please use the format DD/MM/YYYY');
+                this.value = '';
+            }
+        }, 1000);
+    
+    });
+
 }
 
 // only interaction that will occur between textBoxLogic asnd toDoLogic is

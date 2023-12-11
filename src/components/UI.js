@@ -1,5 +1,6 @@
 import { setMultipleAttributes } from "../utils";
 
+
 const getRoot = document.getElementById('content');
 
 // Create header section
@@ -85,6 +86,7 @@ export function createInputBox() {
         'id':'createDueDate-input',
         'placeholder':'Due Date: 12/10/23'
     });
+    
 
     const createProjectName = document.createElement('input');
     setMultipleAttributes(createProjectName, {
