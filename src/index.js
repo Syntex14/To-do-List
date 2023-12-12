@@ -66,6 +66,7 @@
 
 import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
 import { formatData } from './utils';
+import isToday from 'date-fns/isToday'
 
 
 (function loadModules() {
@@ -110,7 +111,7 @@ function textBoxLogic() {
         const textBox = createInputBox();
         textBox.createTextBox();
         addTask.removeTaskListener(true);
-        dueDateLogic();
+        // dueDateLogic();
         addButtonListeners();
     }; // made an edit here
 
@@ -156,25 +157,26 @@ function textBoxLogic() {
     return { createTextBoxLogic };
 }
 
-function dueDateLogic() {
-    const dateInput = document.getElementById('createDueDate-input');
-    let timeOutId;
-    dateInput.addEventListener('input', function() {
-        clearTimeout(timeOutId);
-        
-        timeOutId = setTimeout(() => {
-        const inputValue = this.value;
-        const formatPattern = /\d{2}\/\d{2}\/\d{4}/;
+// function dueDateLogic() {
+//     const dateInput = document.getElementById('createDueDate-input');
+//     let timeOutId;
+//     dateInput.addEventListener('input', function() {
+//         clearTimeout(timeOutId);
 
-            if(!formatPattern.test(inputValue)); {
-                alert('Please use the format DD/MM/YYYY');
-                this.value = '';
-            }
-        }, 1000);
+//         timeOutId = setTimeout(() => {
+//         const inputValue = this.value;
+//         const formatPattern = /\d{2}\/\d{2}\/\d{4}/;
+
+//             if(!formatPattern.test(inputValue)); {
+//                 alert('Please use the format DD/MM/YYYY');
+//                 this.value = '';
+//             }
+//         }, 1000);
     
-    });
+//     });
 
-}
+// } // skipping this part to finish the rest of the project.
+// Will get back to it
 
 // only interaction that will occur between textBoxLogic asnd toDoLogic is
     // when user submits task, we need to get information
@@ -229,7 +231,28 @@ function sideBarLogic() {
                 });
             case 'Today': 
                 removeAllToDos();
+                // will need to set a new array, 
+                    //todayArray equal to filter
+                // will need filter array,
+                    // dataArray.filter(toDo =>
                 // will need a conditional
+                    // return ifToday(toDo.dueDate);
+                // will need loop to create new to{Dos
+                    // todayArray.forEach(toDo =>
+                    // let newToDo = createToDoLogic(...Object.values(toDo))
+                    // newToDo.appendToDo()
+                let todayArray = dataArray.filter(toDo => {
+                    const formatDateForCheck = toDo.dueDate.split('-');
+                    formatDateForCheck[0] -= 1
+                    console.log(formatDateForCheck);
+                    const result = isToday(new Date(+formatDateForCheck[2], formatDateForCheck[0], +formatDateForCheck[1]));
+                    console.log(result);
+                });
+                todayArray.forEach(toDo => {
+                    let newToDo = createToDoLogic(...Object.values(toDo));
+                    newToDo.appendToDo();
+                });
+
                 // compare today's date to dueDate from each toDo
                     // how to get today's date?
 

@@ -1,3 +1,5 @@
+import format from 'date-fns/format'
+
 export function setMultipleAttributes(element, attrs) {
     for(let key in attrs) {
       element.setAttribute(key, attrs[key]);
@@ -39,12 +41,12 @@ export function setMultipleAttributes(element, attrs) {
     }
     intDateArray[0] -= 1; // date-fn only takes 0 - 11 ints for months
                          // if user supplies 1, we get Feb, if 12, undefined
-    // -1 needs to be updated, minor glitch
-    // doesn't work
-    let formatedDate = new Date(
+    let formatedDate = format(new Date(
         intDateArray[2], // year
         intDateArray[0], // months
         intDateArray[1]  // day
+    ),
+        'M-d-y'
     );
 
     return formatedDate;
