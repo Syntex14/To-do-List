@@ -27,9 +27,9 @@ const todayTab = document.createElement('p');
 todayTab.setAttribute('id', 'todayTab-p');
 todayTab.innerText = 'Today';
 
-const weekTab = document.createElement('p');
-weekTab.setAttribute('id', 'weekTab-p');
-weekTab.innerText = 'Week';
+const weekendTab = document.createElement('p');
+weekendTab.setAttribute('id', 'weekendTab-p');
+weekendTab.innerText = 'Weekend';
 
 const projectDiv = document.createElement('div');
 projectDiv.setAttribute('id', 'projectDiv-div');
@@ -37,7 +37,7 @@ const projectDivText = document.createElement('p');
 projectDivText.innerText = 'Projects';
 
 projectDiv.append(projectDivText); 
-sideBarContentWrapper.append(homeTab, todayTab, weekTab, projectDiv);
+sideBarContentWrapper.append(homeTab, todayTab, weekendTab, projectDiv);
 sideBarWrapper.append(sideBarContentWrapper);
 
 // Create To-do Bar

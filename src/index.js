@@ -231,23 +231,20 @@ function sideBarLogic() {
                 });
             case 'Today': 
                 removeAllToDos();
-                // will need to set a new array, 
-                    //todayArray equal to filter
-                // will need filter array,
-                    // dataArray.filter(toDo =>
-                // will need a conditional
-                    // return ifToday(toDo.dueDate);
-                // will need loop to create new to{Dos
-                    // todayArray.forEach(toDo =>
-                    // let newToDo = createToDoLogic(...Object.values(toDo))
-                    // newToDo.appendToDo()
-                let todayArray = dataArray.filter(toDo => {
+
+                function sortByToday(toDo) { 
                     const formatDateForCheck = toDo.dueDate.split('-');
                     formatDateForCheck[0] -= 1
                     console.log(formatDateForCheck);
-                    const result = isToday(new Date(+formatDateForCheck[2], formatDateForCheck[0], +formatDateForCheck[1]));
-                    console.log(result);
-                });
+                    const result = isToday(new Date(
+                        +formatDateForCheck[2],
+                        formatDateForCheck[0],
+                        +formatDateForCheck[1]
+                    ));
+                    return result;
+                }
+                let todayArray = dataArray.filter(sortByToday);
+                console.log(todayArray);
                 todayArray.forEach(toDo => {
                     let newToDo = createToDoLogic(...Object.values(toDo));
                     newToDo.appendToDo();
