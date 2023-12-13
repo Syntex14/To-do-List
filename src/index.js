@@ -65,8 +65,8 @@
                     // will default to what was on original page
 
 import { uiModule, createInputBox, createToDoLogic } from "./components/UI";
-import { formatData } from './utils';
-import isToday from 'date-fns/isToday'
+import { formatData, sortByToday, sortByWeekend } from './utils';
+
 
 
 (function loadModules() {
@@ -222,48 +222,29 @@ function sideBarLogic() {
     }
 
     getSideBar.addEventListener('click', e => {
+        removeAllToDos();
+
         switch(e.target.innerText) {
             case 'Home': 
-                removeAllToDos();
                 dataArray.forEach((toDo) => {
                     let refreshToDo = createToDoLogic(...Object.values(toDo))
                     refreshToDo.appendToDo();
                 });
             case 'Today': 
-                removeAllToDos();
-
-                function sortByToday(toDo) { 
-                    const formatDateForCheck = toDo.dueDate.split('-');
-                    formatDateForCheck[0] -= 1
-                    console.log(formatDateForCheck);
-                    const result = isToday(new Date(
-                        +formatDateForCheck[2],
-                        formatDateForCheck[0],
-                        +formatDateForCheck[1]
-                    ));
-                    return result;
-                }
                 let todayArray = dataArray.filter(sortByToday);
-                console.log(todayArray);
                 todayArray.forEach(toDo => {
                     let newToDo = createToDoLogic(...Object.values(toDo));
                     newToDo.appendToDo();
                 });
-
-                // compare today's date to dueDate from each toDo
-                    // how to get today's date?
-
-
-                    
-                
-                
-                // remove all to-dos from screen
-                // get all tasks from data
-                // createToDo using append function and values
-                // from data
-
-        }
-    });
+            case 'Weekend': 
+                let weekendArray = dataArray.filter(sortByWeekend);
+                weekendArray.forEach(toDo => {
+                    let newToDo = createToDoLogic(...Object.values(toDo));
+                    newToDo.appendToDo();
+                });
+            };
+    }
+);
 }
 
 sideBarLogic();
@@ -419,5 +400,3 @@ function storeToDoData() {
                 
             // Remove DOM element (text boxes)
             // updates appriotate side bar
-
-

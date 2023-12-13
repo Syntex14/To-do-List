@@ -1,4 +1,6 @@
+import { isWeekend } from 'date-fns';
 import format from 'date-fns/format'
+import isToday from 'date-fns/isToday'
 
 export function setMultipleAttributes(element, attrs) {
     for(let key in attrs) {
@@ -61,3 +63,28 @@ export function setMultipleAttributes(element, attrs) {
 
     return { formatName, formatDate, formatDescription }
   }
+
+  export function sortByToday(toDo) { 
+    const formatDateForCheck = toDo.dueDate.split('-');
+    formatDateForCheck[0] -= 1
+    console.log(formatDateForCheck);
+    const result = isToday(new Date(
+        +formatDateForCheck[2],
+        formatDateForCheck[0],
+        +formatDateForCheck[1]
+    ));
+    return result;
+}
+
+export function sortByWeekend(toDo) {
+    const formatDateForCheck = toDo.dueDate.split('-');
+    formatDateForCheck[0] -= 1
+    console.log(formatDateForCheck);
+    const result = isWeekend(new Date(
+        +formatDateForCheck[2],
+        formatDateForCheck[0],
+        +formatDateForCheck[1]
+    ));
+    return result;
+}
+
