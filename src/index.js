@@ -142,11 +142,14 @@ function textBoxLogic() {
     function getToDoValues() {
         const toDoValues = [];
         const getTitleValue = document.getElementById('createTitle-input');
-        // const getDescriptionValue = document.getElementById('createDescription-input');
         const getDueDateValue = document.getElementById('createDueDate-input');
+        const getDescriptionValue = document.getElementById('createDescription-input');
+        const getProjectValue = document.getElementById('createProjectName-input');
 
         toDoValues[0] = getTitleValue.value;
         toDoValues[1] = dataFormate.formatDate(getDueDateValue.value);
+        toDoValues[2] = getDescriptionValue.value;
+        toDoValues[3] = getProjectValue.value;
 
         return toDoValues;
 
@@ -242,6 +245,8 @@ function sideBarLogic() {
                     let newToDo = createToDoLogic(...Object.values(toDo));
                     newToDo.appendToDo();
                 });
+            case 'Projects':
+
             };
     }
 );
@@ -297,13 +302,14 @@ sideBarLogic();
 function storeToDoData() {
     const toDoDataArray = [];
 
-    function createDataObject(toDoName, toDoDueDate, toDoDescription )
+    function createDataObject(toDoName, toDoDueDate, toDoDescription, toDoProjectName )
     {
         return toDoDataArray.push({
             name: `${toDoName}`,
             dueDate: `${toDoDueDate}`,
             completion: false,
             description: `${toDoDescription}`,
+            project: `${toDoProjectName}`
             
         });
     }
