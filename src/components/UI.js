@@ -34,6 +34,7 @@ weekendTab.innerText = 'Weekend';
 const projectDiv = document.createElement('div');
 projectDiv.setAttribute('id', 'projectDiv-div');
 const projectDivText = document.createElement('p');
+projectDivText.setAttribute('id', 'projectDivText-p');
 projectDivText.innerText = 'Projects';
 
 projectDiv.append(projectDivText); 
@@ -166,6 +167,26 @@ export function createToDoLogic(name, date) {
     }
 
     return { appendToDo, updateName, updateDueDate, deleteToDo };
+}
+
+export function createProjectTab() {
+
+    function createProjectElement(...projectNames) {
+        const createProjectNameTab = document.createElement('p');
+        createProjectNameTab.setAttribute('class', 'nameElement-p');
+        createProjectNameTab.innerText = `${projectNames}`
+
+        return createProjectNameTab;
+    }
+
+    function appendProjectNames(projects) {
+        console.log(projects);
+        const getProjectTab = document.getElementById('projectDiv-div');
+        getProjectTab.appendChild(projects);
+    }
+
+    return { createProjectElement, appendProjectNames }
+
 }
     
 
