@@ -71,7 +71,7 @@ import { formatData, sortByToday, sortByWeekend } from './utils';
 
 (function loadModules() {
     uiModule();
-})(); // made an edit here
+})();
 
 const dataObject = storeToDoData();
 const dataFormate = formatData();
@@ -278,31 +278,57 @@ function projectTabLogic() {
         });
     }
 
-    function filterToDo() {
-            let projectFilteredToDo = dataArray.filter(toDo => toDo.project === projectNamesArray);
+    function filterToDo(e) {
+            let projectFilteredToDo = dataArray.filter(toDo => toDo.project === e.target.innerText);
             return projectFilteredToDo;
     }
 
-    function recreateToDos() {
-        projectFilteredToDo.forEach(toDo => {
+    function createSpecificToDo(filteredToDos) {
+        filteredToDos.forEach(toDo => {
             let newToDo = createToDoLogic(...Object.values(toDo));
             newToDo.appendToDo();
         });
     }
 
+    function addProjectListeners() {
+        const getAllProjectTabs = document.getElementsByClassName('nameElement-p');
+        for(let i = 0; i < getAllProjectTabs.length; i++) {
+            getAllProjectTabs[i].addEventListener('click', recreateToDoLogic);
+    }
+    }
+
+    function removeAllToDos () {
+        const toDos = document.querySelectorAll('.toDoWrapper-div');   
+            
+        for ( let i = 0; i < toDos.length; i++) {
+            toDos[i].remove();
+        }
+    } // this an be moved to ui under createToDoLogic
+
     // Internal logic for the project tab
-    
+
     function projectTabInternalLogic() {
         projectTabUI.removeProjectNames();
         filterProjectNames();
         createProjectTitles();
+        addProjectListeners();
     }
+    // Internal logic for creating toDos
+
+    function recreateToDoLogic(e) {
+        removeAllToDos();
+        let filteredToDos = filterToDo(e);
+        createSpecificToDo(filteredToDos);
+        // need a function to filter the toDos
+            // filterToDo
+        // need a function that can actually create and append ToDo
+            // createSpecificToDo
+    }
+
+
     
 
-    const getAllProjectTabs = document.getElementsByClassName('nameElement-p');
-        for(let i = 0; i < getAllProjectTabs.length; i++) {
-            getAllProjectTabs[i].addEventListener('click', recreateToDos);
-    }
+    
     return { projectTabInternalLogic };
 }
 
