@@ -77,6 +77,7 @@ const dataObject = storeToDoData();
 const dataFormate = formatData();
 let textBox = textBoxLogic();
 let addTask = addTaskLogic();
+let projectTab = projectTabLogic();
 addTask.addTaskListener();
 
 function addTaskLogic() {
@@ -122,7 +123,7 @@ function textBoxLogic() {
             getSubmitButton.addEventListener('click', () => {
                 let values = getToDoValues();
                 dataObject.createDataObject(...values);
-                dataObject.trackToDoList();
+                projectTab.projectTabInternalLogic();
                 toDoLogic(values);
                 removeTask();
     });
@@ -215,7 +216,6 @@ function toDoLogic(vals) {
 function sideBarLogic() {
     const getSideBar = document.getElementById('sideBarContentWrapper-div');
     let dataArray = dataObject.getToDoData();
-    let projectTab = createProjectTab();
     
     function removeAllToDos () {
         const toDos = document.querySelectorAll('.toDoWrapper-div');   
@@ -249,109 +249,69 @@ function sideBarLogic() {
                     newToDo.appendToDo();
                 });
                 break;
-            case 'Projects':
-                // By default, I want the tab project to be only seen
-                // If clicked, I want Project to open up a mini-menu list
-                // of projects
+            }   
+        });
+}
+   
+sideBarLogic();
 
-                // The projects shown will not show numerical account but
-                // just the name of the specific project.
+function projectTabLogic() {
+    let projectTabUI = createProjectTab();
+    let dataArray = dataObject.getToDoData();
+    let projectNamesArray = [];
 
-                // The first to-do that has a project name will be used as 
-                // that default name
-                // Will have to create a way to search through each toDo
-                // project name to see how much I'd need to store in memory
-
-                // When the user clicks projects
-                    // 1. Open the project tab filled with different projects
-                        // Avoid duplicates
-                    // Get all projects
-                    // create an array that stores the project names
-                    // iterate through each toDo stored in data
-                    // for each toDo, search array for project name using 
-                    // toDo.projectname as a conditional
-                        // if found, discard
-                        // if not found, input the project name into the array
-                    // How do we create the UI?
-                        // using the values of the array stored with project
-                        // names
-                            // create p elements that will display the values of array
+    function filterProjectNames() {
+        for(let i = 0; i < dataArray.length; i++) {
+            dataArray.forEach(toDo => {
+                if(projectNamesArray.includes(toDo.project)) return;
                 
-                let projectNamesArray = [];
-
-               // filters the toDo to not include same titles again
-
-               for(let i = 0; i < dataArray.length; i++) {
-                    dataArray.forEach(toDo => {
-                        if(projectNamesArray.includes(toDo.project)) return;
-                        
-                        projectNamesArray.push(toDo.project);
-                        console.log(projectNamesArray);
-                });
-               }
-            
-                // creates the titles in project tab
-
-                projectNamesArray.forEach(name => {
-                    let nameElement = projectTab.createProjectElement(name)
-                    projectTab.appendProjectNames(nameElement);
-                });
-
-                // add event listener for each project I have
-                // get all project tabs
-                // add event listeners
-                // store name of project
-                // filter toDoData via project variable
-                // store filtered toDoData in array
-                // create toDos via array
-
-                const getAllProjectTabs = document.getElementsByClassName('nameElement-p');
-                for(let i = 0; i < getAllProjectTabs.length; i++) {
-                    getAllProjectTabs[i].addEventListener('click', () => {
-                        let projectNameToDo = getAllProjectTabs[i].innerText
-                        let projectFilteredToDo = dataArray.filter((toDo) => {
-                            if(toDo.project === projectNameToDo) {
-                            }
-                        projectFilteredToDo.forEach(toDo => {
-                            let newToDo = createToDoLogic(...Object.values(toDo));
-                            newToDo.appendToDo();
-                        });
-                        
-                        })
-                    });
-                }
-
-                // create the toDo again
-                // toDoArray.forEach(toDo => {
-                //     let newToDo = createToDoLogic(...Object.values(toDo));
-                //     newToDo.appendToDo();
-                // });
-
-                // When the user clicks on the specific project name,
-                // I want the projects with that project name to show 
-
-                // So when clicked, use innerText of projectname to compare
-                // toDo.project
-                // if equal, display project
-                // if not, move onto the next item
-
-                // 1. Get all elements of name element
-                    // querySelectorAll
-                // 2. Loop through each element and add an event listener
-                    // forEach
-                // 3. When element is clicked, loop through toDo
-                    // 
-                // 4. For each event clicker, use a comparison between 
-                // title of the element and toDo.project
-                    // if()
-                        // if true, print toDo on screen 
-                        // if not, ignore
-            };
+                projectNamesArray.push(toDo.project);
+                console.log(projectNamesArray);
+        });
+       }
     }
-);
+
+    function createProjectTitles() {
+        projectNamesArray.forEach(name => {
+            let nameElement = projectTabUI.createProjectElement(name)
+            projectTabUI.appendProjectNames(nameElement);
+        });
+    }
+
+    function filterToDo() {
+            let projectFilteredToDo = dataArray.filter(toDo => toDo.project === projectNamesArray);
+            return projectFilteredToDo;
+    }
+
+    function recreateToDos() {
+        projectFilteredToDo.forEach(toDo => {
+            let newToDo = createToDoLogic(...Object.values(toDo));
+            newToDo.appendToDo();
+        });
+    }
+
+    // Internal logic for the project tab
+    
+    function projectTabInternalLogic() {
+        projectTabUI.removeProjectNames();
+        filterProjectNames();
+        createProjectTitles();
+    }
+    
+
+    const getAllProjectTabs = document.getElementsByClassName('nameElement-p');
+        for(let i = 0; i < getAllProjectTabs.length; i++) {
+            getAllProjectTabs[i].addEventListener('click', recreateToDos);
+    }
+    return { projectTabInternalLogic };
 }
 
-sideBarLogic();
+
+
+// move project to it's own logic, too complicated
+// remove event listener on project
+// initalize the projects when submit is clicked
+
 
 // I'm going to need a way to store data from the textboxes the user supplies
 // Currently, I am reliant on the DOM to keep user data

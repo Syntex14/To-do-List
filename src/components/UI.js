@@ -38,8 +38,8 @@ projectDivText.setAttribute('id', 'projectDivText-p');
 projectDivText.innerText = 'Projects';
 
 projectDiv.append(projectDivText); 
-sideBarContentWrapper.append(homeTab, todayTab, weekendTab, projectDiv);
-sideBarWrapper.append(sideBarContentWrapper);
+sideBarContentWrapper.append(homeTab, todayTab, weekendTab);
+sideBarWrapper.append(sideBarContentWrapper, projectDiv);
 
 // Create To-do Bar
 
@@ -185,7 +185,15 @@ export function createProjectTab() {
         getProjectTab.appendChild(projects);
     }
 
-    return { createProjectElement, appendProjectNames }
+    function removeProjectNames() {
+        const getProjects = document.querySelectorAll('.nameElement-p');
+        
+        for (let i = 0; i < getProjects.length; i++) {
+            getProjects[i].remove();
+        }
+    }
+
+    return { createProjectElement, appendProjectNames, removeProjectNames }
 
 }
     
