@@ -64,273 +64,26 @@
                 // Will remove text box and all elements of text box
                     // will default to what was on original page
 
-import { uiModule, createInputBox, createToDoLogic, createProjectTab } from "./components/UI";
-import { formatData, sortByToday, sortByWeekend } from './utils';
-
+import { uiModule } from "./components/UI";
+import { sideBarLogic } from "./components/sideBarLogic";
+import { addTaskLogic } from "./components/addTaskLogic";
 
 
 (function loadModules() {
     uiModule();
 })();
 
-const dataObject = storeToDoData();
-const dataFormate = formatData();
-let textBox = textBoxLogic();
 let addTask = addTaskLogic();
-let projectTab = projectTabLogic();
+
 addTask.addTaskListener();
 
-function addTaskLogic() {
-
-const getAddTask = document.getElementById('addTask-p');
-
-    function addTaskListener() {
-          getAddTask.addEventListener(
-          'click',
-          textBox.createTextBoxLogic,
-          { once: true });
-    }
-
-    // return this maybe?
-    
-    function removeTaskListener(textBoxFlag) {
-        if(textBoxFlag) {
-            getAddTask.removeEventListener(
-              'click',
-              addTaskListener);
-        }
-    }
-
-    return { addTaskListener, removeTaskListener };
-}
 
 
 
-function textBoxLogic() {
-
-    function createTextBoxLogic() {
-        const textBox = createInputBox();
-        textBox.createTextBox();
-        addTask.removeTaskListener(true);
-        // dueDateLogic();
-        addButtonListeners();
-    }; // made an edit here
-
-    function addButtonListeners() {
-        const getSubmitButton = document.getElementById(
-            'createSubmitButton-button'
-        );
-            getSubmitButton.addEventListener('click', () => {
-                let values = getToDoValues();
-                dataObject.createDataObject(...values);
-                projectTab.projectTabInternalLogic();
-                toDoLogic(values);
-                removeTask();
-    });
-        const getCancelButton = document.getElementById(
-            'createCancelButton-button'
-        );
-        getCancelButton.addEventListener('click', removeTask);
-    }
-    
-    function removeTask() {
-        const getTextBox = document.getElementById('createTextBoxWrapper-div');
-        getTextBox.remove();
-        const getAddTask = document.getElementById('addTask-p');
-        getAddTask.addEventListener('click', addTask.addTaskListener);
-    }
-
-    function getToDoValues() {
-        const toDoValues = [];
-        const getTitleValue = document.getElementById('createTitle-input');
-        const getDueDateValue = document.getElementById('createDueDate-input');
-        const getDescriptionValue = document.getElementById('createDescription-input');
-        const getProjectValue = document.getElementById('createProjectName-input');
-
-        toDoValues[0] = getTitleValue.value;
-        toDoValues[1] = dataFormate.formatDate(getDueDateValue.value);
-        toDoValues[2] = getDescriptionValue.value;
-        toDoValues[3] = getProjectValue.value;
-
-        return toDoValues;
-
-        // Is this function still neccessary? 
-        // I can do the same in data storage function
-    }
-
-    return { createTextBoxLogic };
-}
-
-// function dueDateLogic() {
-//     const dateInput = document.getElementById('createDueDate-input');
-//     let timeOutId;
-//     dateInput.addEventListener('input', function() {
-//         clearTimeout(timeOutId);
-
-//         timeOutId = setTimeout(() => {
-//         const inputValue = this.value;
-//         const formatPattern = /\d{2}\/\d{2}\/\d{4}/;
-
-//             if(!formatPattern.test(inputValue)); {
-//                 alert('Please use the format DD/MM/YYYY');
-//                 this.value = '';
-//             }
-//         }, 1000);
-    
-//     });
-
-// } // skipping this part to finish the rest of the project.
-// Will get back to it
-
-// only interaction that will occur between textBoxLogic asnd toDoLogic is
-    // when user submits task, we need to get information
-    // to use when creating toDo.
-    // return information and use it in toDo logic?
-    // create a function in textBoxLogic that gathers the information
-    // 
-
-
-function toDoLogic(vals) {
-    let toDo = createToDoLogic(...vals);
-    toDo.appendToDo();
-
-    // function updateToDoName() {
-    //     const getTitle = document.getElementById('createTitle-input');
-    //     const getInputName = getTitle.value;
-    //     toDo.updateName(getInputName);
-    // }
-
-    // this part need to be updated completely to work with
-    // an edit mode, currently I have it where the only time
-    // a to-do name is made is during setup
-
-    // edit mode
-        // 1. Update name
-        // 2. Update Due Date
-        // 3. Update Description
-        // 4. Update Project Name
-        // 5. Delete To-Do
-    
-}
-
-function sideBarLogic() {
-    const getSideBar = document.getElementById('sideBarContentWrapper-div');
-    let dataArray = dataObject.getToDoData();
-    
-    function removeAllToDos () {
-        const toDos = document.querySelectorAll('.toDoWrapper-div');   
-        
-      for ( let i = 0; i < toDos.length; i++) {
-        toDos[i].remove();
-      }
-    }
-
-    getSideBar.addEventListener('click', e => {
-        removeAllToDos();
-
-        switch(e.target.innerText) {
-            case 'Home': 
-                dataArray.forEach((toDo) => {
-                    let refreshToDo = createToDoLogic(...Object.values(toDo))
-                    refreshToDo.appendToDo();
-                });
-                break;
-            case 'Today': 
-                let todayArray = dataArray.filter(sortByToday);
-                todayArray.forEach(toDo => {
-                    let newToDo = createToDoLogic(...Object.values(toDo));
-                    newToDo.appendToDo();
-                });
-                break;
-            case 'Weekend': 
-                let weekendArray = dataArray.filter(sortByWeekend);
-                weekendArray.forEach(toDo => {
-                    let newToDo = createToDoLogic(...Object.values(toDo));
-                    newToDo.appendToDo();
-                });
-                break;
-            }   
-        });
-}
    
 sideBarLogic();
 
-function projectTabLogic() {
-    let projectTabUI = createProjectTab();
-    let dataArray = dataObject.getToDoData();
-    let projectNamesArray = [];
 
-    function filterProjectNames() {
-        for(let i = 0; i < dataArray.length; i++) {
-            dataArray.forEach(toDo => {
-                if(projectNamesArray.includes(toDo.project)) return;
-                
-                projectNamesArray.push(toDo.project);
-                console.log(projectNamesArray);
-        });
-       }
-    }
-
-    function createProjectTitles() {
-        projectNamesArray.forEach(name => {
-            let nameElement = projectTabUI.createProjectElement(name)
-            projectTabUI.appendProjectNames(nameElement);
-        });
-    }
-
-    function filterToDo(e) {
-            let projectFilteredToDo = dataArray.filter(toDo => toDo.project === e.target.innerText);
-            return projectFilteredToDo;
-    }
-
-    function createSpecificToDo(filteredToDos) {
-        filteredToDos.forEach(toDo => {
-            let newToDo = createToDoLogic(...Object.values(toDo));
-            newToDo.appendToDo();
-        });
-    }
-
-    function addProjectListeners() {
-        const getAllProjectTabs = document.getElementsByClassName('nameElement-p');
-        for(let i = 0; i < getAllProjectTabs.length; i++) {
-            getAllProjectTabs[i].addEventListener('click', recreateToDoLogic);
-    }
-    }
-
-    function removeAllToDos () {
-        const toDos = document.querySelectorAll('.toDoWrapper-div');   
-            
-        for ( let i = 0; i < toDos.length; i++) {
-            toDos[i].remove();
-        }
-    } // this an be moved to ui under createToDoLogic
-
-    // Internal logic for the project tab
-
-    function projectTabInternalLogic() {
-        projectTabUI.removeProjectNames();
-        filterProjectNames();
-        createProjectTitles();
-        addProjectListeners();
-    }
-    // Internal logic for creating toDos
-
-    function recreateToDoLogic(e) {
-        removeAllToDos();
-        let filteredToDos = filterToDo(e);
-        createSpecificToDo(filteredToDos);
-        // need a function to filter the toDos
-            // filterToDo
-        // need a function that can actually create and append ToDo
-            // createSpecificToDo
-    }
-
-
-    
-
-    
-    return { projectTabInternalLogic };
-}
 
 
 
@@ -384,73 +137,37 @@ function projectTabLogic() {
     // no project name = general array
     // project name = project array
 
-function storeToDoData() {
-    const toDoDataArray = [];
 
-    function createDataObject(toDoName, toDoDueDate, toDoDescription, toDoProjectName )
-    {
-        return toDoDataArray.push({
-            name: `${toDoName}`,
-            dueDate: `${toDoDueDate}`,
-            completion: false,
-            description: `${toDoDescription}`,
-            project: `${toDoProjectName}`
-            
-        });
-    }
 
-    function appendDataObject() {
-      toDoDataArray.push(createDataObject());
-    }
+// function internalCheck() {
 
-    function deleteDataObject() {
-        // splice(i, 1);
-            // How can we get i is the question
+//     // internal check will have to work each mode that it's in
+//         // Home - default
+//         // Today - will load as found by loop, e.g. value of internalCheck will be the order the loops find these specific criterion
+//         // Weekend - as above
+//         // Projects - as above
+//     // I need to add a counter to each toDo that is submitted by the user
+//         // E.g. Code! - 1, Garage Clean up - 2
+//     // With that counter variable I need to be able to:
+//         // Remove one unit of counter
+//         // Add one unit of counter
+//     // Remove one unit of counter
+//         // Edge cases
+//             // Ten toDos in total
+//             // Remove one scernario 
+//                 // toDo 3 removed
+//                     // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] --> [1, 2, 4, 5, 6, 7, 8, 9, 10] --> [1, 2, 3, 4, 5, 6, 7, 8, 9]
+//     // 
+//     // find the length of each mode using a loop
+//     // each time an action is submitted by the user, e.g. adding a ToDo or deleting a ToDo
+//         // run the length of each mode again and update value of each ToDo
 
-    }
+//     // 
+//     // 1. Get elements that are on the DOM
+//         // When user clicks submit or delete button, run this loop
+//     // 2. 
 
-    function updateDataObject() {
-        // have to grab the specific to-do in question when
-        // using edit mode
-
-    }
-    
-    function trackToDoList() {
-        console.log(toDoDataArray);
-    }
-
-    function getToDoData() {
-        return toDoDataArray;
-    }
-
-    return { 
-        getToDoData,
-        createDataObject,
-        appendDataObject,
-        trackToDoList 
-    }
-}
-
-// SideBar Logic
-
-// Get all the elements 
-    // Home
-    // Today
-    // Week
-    // Projects
-// Set up a default page
-    // Home
-        // Shows all to-dos
-    // Today
-        // Shows all to-dos with today's date
-    // Week
-        // Shows all to-dos due within a week of today
-    // Projects
-        // Shows to-dos based on project name
-            // e.g. Project Name: Coding
-                // to-do: Reformat code
-                // to-do: Push to production 
-    
+// }
 
 // App logic
     // Default Mode - No to-do on list

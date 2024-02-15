@@ -1,4 +1,4 @@
-import { setMultipleAttributes } from "../utils";
+import { setMultipleAttributes } from "../../utils";
 
 
 const getRoot = document.getElementById('content');
@@ -139,11 +139,15 @@ export function createToDoLogic(name, date) {
     dueDate.setAttribute('class', 'dueDate-p');
     dueDate.innerText = `${date}`;
 
+    const editButton = document.createElement('button');
+    editButton.setAttribute('class', 'editButton-button');
+    editButton.innerText = 'Edit';
+
     const deleteButton = document.createElement('button');
     deleteButton.setAttribute('class', 'deleteButton-button');
     deleteButton.innerText = 'Delete';
 
-    toDoWrapper.append(checkBox, toDoName, dueDate, deleteButton);
+    toDoWrapper.append(checkBox, toDoName, dueDate, editButton, deleteButton);
 
     const appendToDo = () => {
         const getToDoBar = document.getElementById('toDoBar-div');
@@ -167,6 +171,43 @@ export function createToDoLogic(name, date) {
     }
 
     return { appendToDo, updateName, updateDueDate, deleteToDo };
+}
+
+export function displayUI() {
+
+    function createDisplay(name, description, projectName, dueDate) {
+        const displayWrapper = document.createElement('div');
+
+        const displayName = document.createElement('p');
+        displayName.innerText = `${name}`;
+        const displayDescription = document.createElement('p');
+        displayDescription.innerText = `${description}`;
+        const displayProject = document.createElement('p');
+        displayProject.innerText = `${projectName}`;
+        const displayDueDate = document.createElement('p');
+        displayDueDate.innerText = `${dueDate}`;
+
+        const displayExitButton = document.createElement('span');
+        displayExitButton.setMultipleAttributes(displayExitButton,
+            {
+                'id':'displayExitButton-span',
+            });
+        displayExitButton.innerText = '\u2715';
+
+        displayWrapper.append(
+            displayName,
+            displayDetails,
+            displayProject,
+            displayDueDate,
+            displayExitButton
+            );
+    }
+
+    function closeDisplayInfo() {
+        const getExitButton = document.getElementById('displayExitButton-span');
+        getExitButton.remove();  
+    }
+    return { createDisplay };
 }
 
 export function createProjectTab() {

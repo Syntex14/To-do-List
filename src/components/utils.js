@@ -87,4 +87,3 @@ export function sortByWeekend(toDo) {
     ));
     return result;
 }
-
