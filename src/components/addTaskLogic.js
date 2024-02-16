@@ -1,8 +1,10 @@
 import { textBoxLogic } from "./textBoxLogic";
 
+let textBox = textBoxLogic();
+
 export function addTaskLogic() {
 
-    let textBox = textBoxLogic();
+    
     const getAddTask = document.getElementById('addTask-p');
     
         function addTaskListener() {

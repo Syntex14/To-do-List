@@ -1,10 +1,11 @@
 import { createInputBox } from "./UI";
 import { addTaskLogic } from "./addTaskLogic";
-import formatData from './util';
+import { formatData } from '../utils';
+
+let addTask = addTaskLogic();
 
 export function textBoxLogic() {
 
-    let addTask = addTaskLogic();
     let dataFormate = formatData();
 
     function createTextBoxLogic() {

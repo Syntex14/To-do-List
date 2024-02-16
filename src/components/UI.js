@@ -1,4 +1,4 @@
-import { setMultipleAttributes } from "../../utils";
+import { setMultipleAttributes } from "../utils";
 
 
 const getRoot = document.getElementById('content');

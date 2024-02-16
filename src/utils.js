@@ -8,7 +8,7 @@ export function setMultipleAttributes(element, attrs) {
     }
   }
 
- export function formatData(name, date, descr) {
+export function formatData(name, date, descr) {
     function formatName(name) {
         
     }
